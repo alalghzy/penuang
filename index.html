@@ -1179,7 +1179,7 @@ input::placeholder{color:var(--muted2);}
     <button class="sdb-full-btn" id="csvBtn">Backup CSV</button>
   </div>
 
-  <p class="sdb-note" style="margin-top:12px">Header spreadsheet: <code>id</code>, <code>description</code>, <code>type</code>, <code>category</code>, <code>amount</code>, <code>date</code>, <code>createdAt</code>.</p>
+  <p class="sdb-note" style="margin-top:12px">Header spreadsheet: <code>id</code>, <code>description</code>, <code>type</code>, <code>category</code>, <code>amount</code>, <code>date</code>, <code>paymentType</code>, <code>createdAt</code>.</p>
 </div>
 
 <!-- Edit Modal -->
@@ -2004,7 +2004,7 @@ g("sdbForm").addEventListener("submit",async e=>{
   const v=await valCols(); setSdbSt(v.ok?"Koneksi aktif ✓":v.message,!v.ok,v.ok);
 });
 async function valCols(){
-  try{const r=await fetch(bUrl(),{headers:bHdr()});if(!r.ok)return{ok:false,message:`SheetDB error ${r.status}`};const rows=await r.json();if(!rows.length)return{ok:true};const need=["id","description","type","category","amount","date"],got=Object.keys(rows[0]),miss=need.filter(k=>!got.includes(k));return miss.length?{ok:false,message:`Kolom hilang: ${miss.join(", ")}`}:{ok:true};}catch(e){return{ok:false,message:e.message};}
+  try{const r=await fetch(bUrl(),{headers:bHdr()});if(!r.ok)return{ok:false,message:`SheetDB error ${r.status}`};const rows=await r.json();if(!rows.length)return{ok:true};const need=["id","description","type","category","amount","date","paymentType"],got=Object.keys(rows[0]),miss=need.filter(k=>!got.includes(k));return miss.length?{ok:false,message:`Kolom hilang: ${miss.join(", ")}`}:{ok:true};}catch(e){return{ok:false,message:e.message};}
 }
 g("pullBtn").addEventListener("click",async()=>{
   if(!hasCfg()){setSdbSt("Simpan koneksi dulu.",true);return;}setSdbSt("Menarik data…");
@@ -2020,7 +2020,7 @@ g("pushBtn").addEventListener("click",async()=>{
     render();setSdbSt(`Push selesai: ${u.length} baris.`,false,true);
   }catch(e){setSdbSt(`Gagal: ${e.message}`,true);}
 });
-function sanRemote(rows){if(!Array.isArray(rows))return[];return rows.map(r=>({id:String(r.id||uid()),description:String(r.description||"").trim(),type:r.type==="expense"?"expense":"income",category:String(r.category||"").trim(),amount:Number(r.amount),date:String(r.date||""),paymentType:(r.paymentType==="cashless"?"cashless":"cash"),createdAt:r.createdAt||new Date().toISOString(),sheetDbSynced:true})).filter(t=>!PDL.includes(t.id)&&t.description&&t.date&&isFinite(t.amount)&&t.amount>0);}
+function sanRemote(rows){if(!Array.isArray(rows))return[];return rows.map(r=>({id:String(r.id||uid()),description:String(r.description||"").trim(),type:r.type==="expense"?"expense":"income",category:String(r.category||"").trim(),amount:Number(r.amount),date:String(r.date||""),paymentType:(String(r.paymentType||"").toLowerCase()==="cashless"?"cashless":"cash"),createdAt:r.createdAt||new Date().toISOString(),sheetDbSynced:true})).filter(t=>!PDL.includes(t.id)&&t.description&&t.date&&isFinite(t.amount)&&t.amount>0);}
 function mergeData(remote){const m=new Map(remote.map(t=>[t.id,{...t,sheetDbSynced:true}]));TXS.filter(t=>!t.sheetDbSynced).forEach(t=>{if(!m.has(t.id))m.set(t.id,{...t});});TXS.splice(0,TXS.length,...m.values());}
 function bUrl(p="",ps={}){const u=new URL(`${CFG.apiUrl}${p}`);if(CFG.sheetName)u.searchParams.set("sheet",CFG.sheetName);Object.entries(ps).forEach(([k,v])=>{if(v!=null&&v!=="")u.searchParams.set(k,v);});return u.toString();}
 function bHdr(e={}){const h={Accept:"application/json",...e};if(CFG.token)h.Authorization=`Bearer ${CFG.token}`;return h;}
@@ -2034,7 +2034,7 @@ function setSdbSt(m,err=false,ok=false){
 
 /* ─── EXPORT ─── */
 g("jsonBtn").addEventListener("click",()=>{dlFile(JSON.stringify({exportedAt:new Date().toISOString(),transactionCount:TXS.length,PDL,TXS},null,2),`penUang-${today()}.json`,"application/json");setSdbSt("Backup JSON berhasil.",false,true);});
-g("csvBtn").addEventListener("click",()=>{const h=["id","description","type","category","amount","date","createdAt","sheetDbSynced"];const rows=TXS.map(t=>[t.id,t.description,t.type,t.category,t.amount,t.date,t.createdAt,t.sheetDbSynced?"yes":"no"]);dlFile([h,...rows].map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\r\n"),`penUang-${today()}.csv`,"text/csv;charset=utf-8;");setSdbSt("Backup CSV berhasil.",false,true);});
+g("csvBtn").addEventListener("click",()=>{const h=["id","description","type","category","amount","date","paymentType","createdAt","sheetDbSynced"];const rows=TXS.map(t=>[t.id,t.description,t.type,t.category,t.amount,t.date,t.paymentType||"cash",t.createdAt,t.sheetDbSynced?"yes":"no"]);dlFile([h,...rows].map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\r\n"),`penUang-${today()}.csv`,"text/csv;charset=utf-8;");setSdbSt("Backup CSV berhasil.",false,true);});
 function dlFile(c,n,m){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:m}));a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),0);}
 
 /* ─── STORAGE ─── */
