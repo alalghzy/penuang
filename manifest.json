@@ -2,7 +2,7 @@
   "name": "penUang | Catatan Keuangan",
   "short_name": "penUang",
   "description": "Catatan keuangan pribadi — catat pemasukan & pengeluaran dengan mudah",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f2e8d9",
