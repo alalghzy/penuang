@@ -10,18 +10,17 @@
   "lang": "id",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%23c87c1e'/%3E%3Ctext x='96' y='130' font-size='110' text-anchor='middle' font-family='Georgia,serif' fill='%23fff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj4KICA8cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjM2IiBmaWxsPSIjYzg3YzFlIi8+CiAgPHJlY3QgeD0iMjQiIHk9IjU2IiB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjEwMCIgcng9IjE2IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4xNSIvPgogIDx0ZXh0IHg9Ijk2IiB5PSIxMDgiIGZvbnQtc2l6ZT0iNDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPnBlbjwvdGV4dD4KICA8dGV4dCB4PSI5NiIgeT0iMTQ4IiBmb250LXNpemU9IjI4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuODUiIGZvbnQtc3R5bGU9Iml0YWxpYyI+VWFuZzwvdGV4dD4KICA8Y2lyY2xlIGN4PSIxNTIiIGN5PSI0OCIgcj0iMjAiIGZpbGw9IiNmZGY4ZjEiLz4KICA8dGV4dCB4PSIxNTIiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2VyaWYiIGZpbGw9IiNjODdjMWUiPlJwPC90ZXh0Pgo8L3N2Zz4=",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23c87c1e'/%3E%3Ctext x='256' y='350' font-size='300' text-anchor='middle' font-family='Georgia,serif' fill='%23fff'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjYzg3YzFlIi8+CiAgPHJlY3QgeD0iNjQiIHk9IjE0OCIgd2lkdGg9IjM4NCIgaGVpZ2h0PSIyNjgiIHJ4PSI0MiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMTUiLz4KICA8dGV4dCB4PSIyNTYiIHk9IjI5MCIgZm9udC1zaXplPSIxMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPnBlbjwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjM4OCIgZm9udC1zaXplPSI3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjg1IiBmb250LXN0eWxlPSJpdGFsaWMiPlVhbmc8L3RleHQ+CiAgPGNpcmNsZSBjeD0iNDA2IiBjeT0iMTI4IiByPSI1NCIgZmlsbD0iI2ZkZjhmMSIvPgogIDx0ZXh0IHg9IjQwNiIgeT0iMTQ2IiBmb250LXNpemU9IjU4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2VyaWYiIGZpbGw9IiNjODdjMWUiIGZvbnQtd2VpZ2h0PSJib2xkIj5ScDwvdGV4dD4KPC9zdmc+",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["finance", "productivity"],
-  "screenshots": []
+  "categories": ["finance", "productivity"]
 }

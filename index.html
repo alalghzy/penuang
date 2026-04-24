@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="penUang">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c87c1e'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle' font-family='Georgia,serif' fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23c87c1e'/%3E%3Ctext x='90' y='130' font-size='100' text-anchor='middle' font-family='Georgia,serif' fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
@@ -913,6 +915,49 @@ input::placeholder{color:var(--muted2);}
   box-shadow:0 4px 18px rgba(0,0,0,.22);
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ══ PWA INSTALL BANNER ══ */
+.pwa-banner{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);
+  width:min(440px,100%);z-index:300;
+  background:var(--panel-solid);
+  border:1px solid var(--line-strong);
+  border-bottom:none;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -6px 32px rgba(0,0,0,.18);
+  padding:16px 18px calc(env(safe-area-inset-bottom,0px) + 18px);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;gap:14px;
+}
+.pwa-banner.show{transform:translateX(-50%) translateY(0);}
+.pwa-banner-icon{
+  width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,#a06010,var(--accent));
+  display:grid;place-items:center;font-size:1.6rem;
+  box-shadow:0 4px 14px rgba(200,124,30,.35);
+}
+.pwa-banner-text{flex:1;min-width:0;}
+.pwa-banner-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:2px;}
+.pwa-banner-sub{font-size:.76rem;color:var(--muted);line-height:1.4;}
+.pwa-banner-btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.pwa-install-btn{
+  padding:9px 16px;border-radius:var(--r-sm);
+  background:linear-gradient(135deg,#a06010,var(--accent));
+  color:#fff;border:none;cursor:pointer;
+  font-size:.82rem;font-weight:700;white-space:nowrap;
+  box-shadow:0 3px 12px rgba(200,124,30,.35);
+  transition:transform var(--dur),box-shadow var(--dur),filter var(--dur);
+}
+.pwa-install-btn:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 5px 16px rgba(200,124,30,.42);}
+.pwa-install-btn:active{transform:scale(.95);}
+.pwa-dismiss-btn{
+  padding:7px 16px;border-radius:var(--r-sm);
+  background:transparent;color:var(--muted);
+  border:1px solid var(--line-strong);cursor:pointer;
+  font-size:.76rem;font-weight:500;white-space:nowrap;
+  transition:background var(--dur),color var(--dur);
+}
+.pwa-dismiss-btn:hover{background:var(--bg2);color:var(--text);}
 </style>
 </head>
 <body>
@@ -1242,6 +1287,19 @@ input::placeholder{color:var(--muted2);}
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- PWA Install Banner -->
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-banner-icon">💰</div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Install penUang</div>
+    <div class="pwa-banner-sub">Tambahkan ke layar utama untuk akses lebih cepat & mode offline</div>
+  </div>
+  <div class="pwa-banner-btns">
+    <button class="pwa-install-btn" id="pwaInstallBtn">Install</button>
+    <button class="pwa-dismiss-btn" id="pwaDismissBtn">Nanti</button>
+  </div>
+</div>
 
 <script>
 /* ─── CATEGORY STORAGE ─── */
@@ -2071,7 +2129,49 @@ function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt
 function nu(v){const t=String(v||"").trim().replace(/\/+$/,"");if(!t)return"";if(/^https?:\/\//i.test(t))return t;return`${SDB}/${t.replace(/^\/+/,"")}`;}
 function exId(v){const n=nu(v);return n.startsWith(SDB+"/")? n.slice(SDB.length+1):n;}
 
-/* ─── SERVICE WORKER (PWA) ─── */
+/* ─── PWA INSTALL BANNER ─── */
+let deferredPrompt = null;
+const PWA_KEY = "penUang-pwa-dismissed";
+
+function showPwaBanner(){
+  if(localStorage.getItem(PWA_KEY)) return;
+  if(window.matchMedia("(display-mode: standalone)").matches) return;
+  setTimeout(() => g("pwaBanner").classList.add("show"), 2000);
+}
+function hidePwaBanner(){
+  g("pwaBanner").classList.remove("show");
+}
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showPwaBanner();
+});
+
+g("pwaInstallBtn").addEventListener("click", async () => {
+  if(!deferredPrompt) return;
+  hidePwaBanner();
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if(outcome === "accepted"){
+    toast("✓ penUang berhasil diinstall!");
+    localStorage.setItem(PWA_KEY, "1");
+  }
+  deferredPrompt = null;
+});
+
+g("pwaDismissBtn").addEventListener("click", () => {
+  hidePwaBanner();
+  localStorage.setItem(PWA_KEY, "1");
+});
+
+window.addEventListener("appinstalled", () => {
+  hidePwaBanner();
+  deferredPrompt = null;
+  toast("✓ penUang berhasil diinstall!");
+});
+
+/* ─── SERVICE WORKER ─── */
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js")
