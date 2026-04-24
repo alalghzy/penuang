@@ -1122,10 +1122,10 @@ input::placeholder{color:var(--muted2);}
       <div class="sdb-api-row" style="margin-top:16px;">
         <span class="sdb-api-label">API SheetDB</span>
         <div class="sdb-api-form">
-          <input id="obUrl" type="text" placeholder="Masukkan ID SheetDB…" autocomplete="off">
+          <input id="obUrl" type="text" placeholder="Masukkan API SheetDB…" autocomplete="off">
         </div>
       </div>
-      <p class="onboard-hint">Isi bagian setelah <code>sheetdb.io/api/v1/</code>, contoh: <code>58f61be4dda40</code></p>
+      <p class="onboard-hint">Isi dengan API yang terdapat pada Sheet DB</p>
       <div class="modal-actions" style="margin-top:16px;">
         <button class="btn-p" id="obConnectBtn">Hubungkan &amp; Ambil Data</button>
         <button class="btn-s" id="obSkipBtn">Lewati dulu</button>
@@ -1320,7 +1320,7 @@ function saveCats(arr){ localStorage.setItem(CAT_KEY, JSON.stringify(arr)); }
 const SK   = "penUang-transactions";
 const SCFG = "penUang-sheetdb-config";
 const SPDL = "penUang-sheetdb-pending-delete-ids";
-const SDB  = "https://sheetdb.io/api/v1";
+const SDB  = "";
 const TK   = "penUang-theme";
 
 /* ─── STATE ─── */
